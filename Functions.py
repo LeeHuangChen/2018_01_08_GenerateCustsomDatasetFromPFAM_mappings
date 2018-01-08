@@ -12,7 +12,7 @@ def CreateFamilyToArrDict():
 
 	#dictionary of lines from the mapping file
 		#key: PFAM_ACC
-		#val: array of values in the lines
+		#val: arrays of arrays of values in the lines
 	FamToArrDict={}
 	util.progressbarGuide(20)
 	for i, line in enumerate(mappingLines):
@@ -24,7 +24,10 @@ def CreateFamilyToArrDict():
 			#PDB_ID	CHAIN_ID	PdbResNumStart	PdbResNumEnd	PFAM_ACC	PFAM_Name	PFAM_desc	eValue
 			arr=line.split("\t")
 			acc=arr[4]
-			FamToArrDict[acc]=arr
+			if acc in FamToArrDict.keys():
+				FamToArrDict[acc].append(arr)
+			else:
+				FamToArrDict[acc]=[arr]
 
 	#dump the dictionary to disc
 	with open(conf.FamToArrDictLoc,"wb") as f:
