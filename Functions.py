@@ -83,6 +83,7 @@ def GenerateBorderMappingsForGivenFamily(famName):
 #assumes FamilyToArr dict is generated
 def GenerateBorderMappingsForGivenFamilies(famNameArr):
 	for famName in famNameArr:
+		print "analyzing:",famName
 		GenerateBorderMappingsForGivenFamily(famName)
 
 
