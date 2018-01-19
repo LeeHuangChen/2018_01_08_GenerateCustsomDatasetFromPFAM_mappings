@@ -2,6 +2,7 @@ import Configurations as conf
 from cPickle import dump, load
 import util
 import os
+from Bio import SeqIO
 
 #create the familyToArrDict
 def CreateFamilyToArrDict():
@@ -85,6 +86,27 @@ def GenerateBorderMappingsForGivenFamilies(famNameArr):
 	for famName in famNameArr:
 		print "analyzing:",famName
 		GenerateBorderMappingsForGivenFamily(famName)
+
+
+def CreatePIDtoFastaSeqDict():
+	records=SeqIO.parse("pamMappings/pdb_pfam_mapping.fasta","fasta")
+	outfilename="Generated/pidToBioSeqDict.cpickle"
+	pidToBioSeqDict={}
+	for record in records:
+		pid=record.description.split(":")[0].strip()
+		pidToBioSeqDict[pid]=record
+
+	with open(outfilename,"wb") as f:
+		dump(pidToBioSeqDict,f)
+
+
+#assumes FamilyToArr dict is generated
+def GenerateFastaInputForGivenFamily(famName):
+	#import the FamToArrDict
+	with open(conf.FamToArrDictLoc,"rb") as f:
+		FamToArrDict=load(f)
+
+
 
 
 def main():
